@@ -2,7 +2,9 @@
 def analyze_emotion(event, context):
     # Import the used libraries
     from google.cloud import vision
-
+    import firebase_admin
+    from firebase_admin import firestore
+    
     # Instance of the vision client
     vision_client = vision.ImageAnnotatorClient()
 
@@ -51,3 +53,30 @@ def analyze_emotion(event, context):
 
     # Print the message
     print(console_message)
+
+    # Set up the firebase authentication to use the Firestore Data Base
+    app_options = {'projectId': 'soa-p1-fd'}
+
+    # Initialize a default app of Firebase Admin
+    default_app = firebase_admin.initialize_app(options=app_options)
+
+    # Instance of a Firestore Client to operate the Data Base
+    db = firestore.client()
+
+    # Firestore Collection name
+    collection_name = "employee"
+
+    # Document name (The actual data of the employee emotion)
+    document_name = "employee " + employee_name
+
+    # Create the document and the Collection
+    doc_ref = db.collection(collection_name).document(document_name)
+
+    # Add fields to the document
+    doc_ref.set({
+        "name": employee_name,
+        "emotion": costumer_emotion
+    })
+    
+    # Delete the default app for not interfering with another app
+    firebase_admin.delete_app(default_app)
