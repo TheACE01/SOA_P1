@@ -26,6 +26,7 @@ resource "google_storage_bucket_object" "zip" {
 resource "google_cloudfunctions_function" "function" {
     name                  = "sentiment_analysis_function"
     runtime               = "python37"  # of course changeable
+    description = "When this function is excecuted an image from the Bucket is analyzed in order to find costumer emotions."
 
     # Get the source code of the cloud function as a Zip compression
     source_archive_bucket = google_storage_bucket.function_bucket.name
