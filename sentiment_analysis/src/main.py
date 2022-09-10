@@ -9,6 +9,9 @@ def analyze_emotion(event, context):
     # The file name (The image to be analyzed)
     file_name = event["name"]
 
+    # The employee name by spliting the file name
+    employee_name = file_name.split(".")[0]
+    
     # The bucket name where the image is uploaded
     bucket_name = event["bucket"]
 
@@ -24,4 +27,27 @@ def analyze_emotion(event, context):
     # Get the first face annotation found (There must be only one person in the picture)
     response = face_detection[0]
 
-    print(response)
+    # The emotion result in case the used emotions don't match
+    costumer_emotion = "Unknown"
+
+    # Checking what kind of emotion does the costumer have
+    # The likeliness is a numeric value from 0 to 5
+    # 0 means --> Very Unlikely
+    # 5 means --> Very Likely
+    if (response.joy_likelihood >= 3) and (response.joy_likelihood <= 5):
+        costumer_emotion = "Happy"
+
+    elif (response.anger_likelihood >= 3) and (response.anger_likelihood <= 5):
+        costumer_emotion = "Angry"
+
+    elif (response.sorrow_likelihood >= 3) and (response.sorrow_likelihood <= 5):
+        costumer_emotion = "Sad"
+        
+    elif (response.surprise_likelihood >= 3) and (response.surprise_likelihood <= 5):
+        costumer_emotion = "Surprised"
+
+    # Create the message to be displayed in the Cloud Function's Logs
+    console_message = "The employee " + employee_name + " is " + costumer_emotion
+
+    # Print the message
+    print(console_message)
