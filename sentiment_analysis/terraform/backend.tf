@@ -1,7 +1,14 @@
 # Defines where terraform is going to storage the state of the infraestructure
 
-# Local means that I'm gonna store the state on the local machine disk
-# Remote is used when I need to share the state with others developers
+# Using Terraform Cloud Workspace to store the terraform state and share it with the team
+# The workspace excecution is set up local, thus, Terraform Cloud just store the terraform states
 terraform {
-  backend "local" {}
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "soa-orga-spot"
+
+    workspaces {
+      name = "soa-orga-workspace"
+    }
+  }
 }
