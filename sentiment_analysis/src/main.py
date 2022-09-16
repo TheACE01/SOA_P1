@@ -14,13 +14,7 @@ def analyze_emotion(event,_):
     vision_client = vision.ImageAnnotatorClient() # Instance of the vision client
     file_name = event["name"]  # The file name (The image to be analyzed)
     employee_name = file_name.split(".")[0] # The employee name by spliting the file name
-    bucket_name = event["bucket"] # The bucket name where the image is uploaded
-    # 
-    print("///////////////////////////")
-    print(bucket_name)
-    print(file_name)
-    print("///////////////////////////")
-    
+    bucket_name = event["bucket"] # The bucket name where the image is uploaded 
     blob_uri = f"gs://{bucket_name}/{file_name}" # The image file URI in Google Storage route 
     blob_source = vision.Image(source=vision.ImageSource(image_uri=blob_uri)) # The image as a blob source that can be analyzed
     face_detection = vision_client.face_detection(image=blob_source).face_annotations     # Using the face detection method from the Google Vision API to get the face annotations
