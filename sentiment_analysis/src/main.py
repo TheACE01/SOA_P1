@@ -3,7 +3,7 @@ from google.cloud import vision
 import firebase_admin
 from firebase_admin import firestore
 
-def analyze_emotion(event):
+def analyze_emotion(_,event):
     """
     This function analyzes customer's images in order to detect emotions.
     To do so, Python accesses the Google Storage Bucket where the image is
@@ -11,6 +11,7 @@ def analyze_emotion(event):
     Finally, for keeping track on the results, the costumer's emotion is stored in
     a Google Firestore Data Base.
     """
+    print(event) # shows the structure of the 
     vision_client = vision.ImageAnnotatorClient() # Instance of the vision client
     file_name = event["name"]  # The file name (The image to be analyzed)
     employee_name = file_name.split(".")[0] # The employee name by spliting the file name

@@ -4,7 +4,9 @@ import firebase_admin
 from firebase_admin import firestore
 
 """This is the main Python function ready to be excecuted as a Cloud Function"""
-def analyze_emotion(event):
+def analyze_emotion(_,event):
+    # shows the structure of the 
+    print(event)
     # Instance of the vision client
     vision_client = vision.ImageAnnotatorClient()
     # The file name (The image to be analyzed)
