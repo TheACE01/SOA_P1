@@ -46,3 +46,6 @@ def analyze_emotion(event,_):
         "emotion": costumer_emotion
     })
     firebase_admin.delete_app(default_app)# Delete the default app for not interfering with another app
+
+    return costumer_emotion
+    
