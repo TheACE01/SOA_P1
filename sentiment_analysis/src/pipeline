@@ -1,0 +1,84 @@
+pipeline {
+    agent any
+    tools {
+        terraform 'terraform'
+    }
+    options {disableConcurrentBuilds()}
+    environment {
+        GOOGLE_PROJECT_ID = "soa-p1-fd" 
+        GOOGLE_PROJECT_NAME = "SOA-P1-FD"
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('cicd_jenkins_terraform')
+        GOOGLE_CLOUD_KEYFILE_JSON = credentials('cicd_jenkins_terraform')
+        TF_TOKEN_app_terraform_io = credentials('terraform-token')
+    }
+    parameters { 
+      choice(name: 'ENTORNOS', choices: ['dev', 'pre', 'pro'], description: 'Seleccione el entorno a utilizar')
+      choice(name: 'ACCION', choices: ['', 'plan-apply', 'destroy'], description: 'Seleccione el entorno a utilizar')
+    }
+    stages{
+        //${params.Acción}
+
+
+        stage("git clone code terraform"){
+            steps {
+                checkout([$class: 'GitSCM', 
+                branches: [[name: '*/infraestructure']], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [[$class: 'CleanCheckout']], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [
+                        [url: 'https://github.com/TheACE01/SOA_P1.git']
+                        ]])
+                sh 'pwd'
+                sh 'ls -l'
+            } //steps
+        }  //stage
+
+        stage("Python lint"){
+            steps {
+                dir('sentiment_analysis/src') {
+                    echo '#############################################################'
+                    sh 'pylint new_main.py --exit-zero'
+                }
+            } //steps
+        }  //stage
+
+        stage('Unit Test'){
+            steps{
+                echo '#############################################################'
+                sh 'cd sentiment_analysis/src/'
+                sh 'pip install -r requirements.txt'
+                sh 'python unit-test.py'
+                echo '#############################################################'
+            }
+        }
+
+        stage('Terraform init----') {
+            steps {
+                sh 'terraform --version'
+                sh 'cd sentiment_analysis/terraform/ && terraform init'
+            } //steps
+        }  //stage
+
+        stage('Terraform plan----') {
+            steps {
+                sh 'cd sentiment_analysis/terraform/ && terraform plan -lock=false'
+            } //steps
+        }  //stage
+        
+        stage('Terraform apply or destroy ----------------') {
+            steps {
+               sh 'echo "comienza"'
+            script{
+                if (params.ACCION == "destroy"){
+                        sh ' echo "llego" + params.ACCION'   
+                        sh 'cd sentiment_analysis/terraform/ && terraform destroy -auto-approve'
+                    } else {
+                        sh ' echo  "llego" + params.ACCION'                 
+                        sh 'cd sentiment_analysis/terraform/ && terraform apply -auto-approve'  
+                    }  // if
+                }
+            } //steps
+        }  //stage
+   }  // stages
+} //pipeline
