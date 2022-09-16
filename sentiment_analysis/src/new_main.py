@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import firestore
 
 """This is the main Python function ready to be excecuted as a Cloud Function"""
-def analyze_emotion(_,event):
+def analyze_emotion(event,_):
     # shows the structure of the 
     print(event)
     # Instance of the vision client
