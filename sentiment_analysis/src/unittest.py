@@ -1,15 +1,19 @@
-import main
+from main import analyze_emotion
+import unittest
 
-"""
-Unit test
-"""
+class TestEmotions(unittest.TestCase):
 
+    def test_analyze_emotion_correct(self):
+        self.assertEqual(
+            analyze_emotion(
+                {"name": "unittest.jpg", "bucket": "tfstate-bucket-soa"}, 0),
+                "Happy")
 
-def test_analyze_emotion():
-    """
-    Unit test
-    """
-    result = main.analyze_emotion(
-        {"name": "unittest.jpg", "bucket": "tfstate-bucket-soa"}, 0)
+    def test_analyze_emotion_incorrect(self):
+        self.assertEqual(
+            analyze_emotion(
+                {"name": "unittest.jpg", "bucket": "tfstate-bucket-soa"}, 0),
+                "Angry")
 
-    assert result == "Happy"
+if __name__ == '__main__':
+    unittest.main()
