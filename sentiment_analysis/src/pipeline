@@ -46,14 +46,14 @@ pipeline {
         stage('Build'){
             steps{
                 echo '#############################################################'
-                sh 'cd sentiment_analysis/src/ && ls -l && pip install -r requirements.txt'
+                sh 'cd sentiment_analysis/src/ && ls -l && pip3 install -r requirements.txt'
                 echo '#############################################################'
             }
         }
 
         stage('Unit Test'){
             steps{
-                sh 'cd sentiment_analysis/src/ && python unittest.py'
+                sh 'cd sentiment_analysis/src/ && python3 unittest.py'
             }
         }
 
