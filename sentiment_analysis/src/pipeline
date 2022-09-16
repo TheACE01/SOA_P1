@@ -53,7 +53,7 @@ pipeline {
 
         stage('Unit Test'){
             steps{
-                sh 'cd sentiment_analysis/src/ && python3 unittest.py'
+                sh 'cd sentiment_analysis/src/ && python3 unit-test.py'
             }
         }
 
