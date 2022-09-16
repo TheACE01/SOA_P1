@@ -10,7 +10,7 @@ class TestEmotions(unittest.TestCase):
                 "Happy")
 
     def test_analyze_emotion_incorrect(self):
-        self.assertEqual(
+        self.assertNotEqual(
             analyze_emotion(
                 {"name": "unittest.jpg", "bucket": "tfstate-bucket-soa"}, 0),
                 "Angry")
