@@ -18,10 +18,11 @@ pipeline {
     stages{
         //${params.Acción}
 
+
         stage("git clone code terraform"){
             steps {
                 checkout([$class: 'GitSCM', 
-                branches: [[name: '*/infraestructure']], 
+                branches: [[name: '*/infraestructure'], [name: '*/master'], [name: '*/develop']], 
                 doGenerateSubmoduleConfigurations: false, 
                 extensions: [[$class: 'CleanCheckout']], 
                 submoduleCfg: [], 
