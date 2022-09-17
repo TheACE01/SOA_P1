@@ -18,7 +18,6 @@ pipeline {
     stages{
         //${params.Acción}
 
-
         stage("git clone code terraform"){
             steps {
                 checkout([$class: 'GitSCM', 
@@ -37,7 +36,6 @@ pipeline {
         stage("Python lint"){
             steps {
                 dir('sentiment_analysis/src') {
-                    echo '#############################################################'
                     sh 'pylint new_main.py --exit-zero'
                 }
             } //steps
@@ -45,9 +43,7 @@ pipeline {
 
         stage('Build'){
             steps{
-                echo '#############################################################'
-                sh 'cd sentiment_analysis/src/ && ls -l && pip3 install -r requirements.txt'
-                echo '#############################################################'
+                sh 'cd sentiment_analysis/src/ && pip3 install -r requirements.txt'
             }
         }
 
