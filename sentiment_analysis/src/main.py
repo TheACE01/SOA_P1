@@ -11,6 +11,7 @@ def analyze_emotion(event,_):
     Finally, for keeping track on the results, the costumer's emotion is stored in
     a Google Firestore Data Base.
     """
+    # test de revision
     vision_client = vision.ImageAnnotatorClient() # Instance of the vision client
     file_name = event["name"]  # The file name (The image to be analyzed)
     employee_name = file_name.split(".")[0] # The employee name by spliting the file name
